@@ -1,0 +1,10 @@
+body {
+    background-color:darkgray;
+}
+h1 {
+    color:black;
+    background-color: white;
+    text-align: center;
+    font-family:Verdana;
+    font-size: 40px;
+}
