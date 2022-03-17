@@ -8,3 +8,10 @@ h1 {
     font-family:Verdana;
     font-size: 40px;
 }
+
+.rectangle {
+    margin-left: -10px;
+    width: 200px;
+    height: 100px;
+    background: rgba(255, 0, 255, 10);
+}
