@@ -1,16 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Welcome!</title>
-</head>
-<body>
-    <h1>Header</h1>
-    <p>ayy.</p>
-    <p>yuh.</p>
-    <div class="rectangle">hi</div>
-</body>
-</html>
+<canvas id="snakeBoard" width="900" height="900"></canvas>
+<script>
+window.onload=function() {
+    canv=document.getElementById("snakeBoard");
+    snakeboardContext=canv.getContext("2d");
+    document.addEventListener("keydown",keyPush);
+    startGame();
+}
+position_x=position_y=10;
+gridSize=tileCount=30;
+apple_x=apple_y=15;
+velocity_x=velocity_y=0;
+trail=[];
+tail = 5;
+
+function game() {
+    position_x+=velocity_x;
+    position_y+=velocity_y;
+    if(position_x<0) {
+        failedGame()
+    }
+    if(position_x>tileCount-1) {
+        failedGame()
+    }
+    if(position_y<0) {
+        failedGame()
+    }
+    if(position_y>tileCount-1) {
+        failedGame()
+    }
+    snakeboardContext.fillStyle="black";
+    snakeboardContext.fillRect(0,0,canv.width,canv.height);
+ 
+    snakeboardContext.fillStyle="lime";
+    for(var i=0;i<trail.length;i++) {
+        snakeboardContext.fillRect(trail[i].x*gridSize,trail[i].y*gridSize,gridSize-2,gridSize-2);
+        if(trail[i].x==position_x && trail[i].y==position_y) {
+            failedGame();
+        }
+    }
+    trail.push({x:position_x,y:position_y});
+    while(trail.length>tail) {
+    trail.shift();
+    }
+ 
+    if(apple_x==position_x && apple_y==position_y) {
+        tail++;
+        apple_x=Math.floor(Math.random()*tileCount);
+        apple_y=Math.floor(Math.random()*tileCount);
+    }
+    snakeboardContext.fillStyle="red";
+    snakeboardContext.fillRect(apple_x*gridSize,apple_y*gridSize,gridSize-2,gridSize-2);
+}
+
+function startGame()    {
+     
+    setInterval(game,1000/12);
+}
+
+function failedGame() {
+    tail = 5;
+    position_x=position_y=10;
+    velocity_x = 0
+    velocity_y = 0;
+    snakeboardContext.fillStyle="black";
+    snakeboardContext.fillRect(0,0,canv.width,canv.height);
+    snakeboardContext.fillStyle="lime";
+    snakeboardContext.fillRect(position_x*gridSize,position_y*gridSize,gridSize-2,gridSize-2);
+}
+
+function keyPush(evt) {
+    switch(evt.keyCode) {
+        case 37:
+            velocity_x=-1;velocity_y=0;
+            break;
+        case 38:
+            velocity_x=0;velocity_y=-1;
+            break;
+        case 39:
+            velocity_x=1;velocity_y=0;
+            break;
+        case 40:
+            velocity_x=0;velocity_y=1;
+            break;
+    }
+}
+</script>
